@@ -10,13 +10,12 @@ PyTorch projects covering image segmentation, image captioning, diffusion models
 | 4 | [Diffusion models](04-diffusion-models/) | Unconditional and label-conditioned DDPM with a U-Net, MNIST | [Generated digit samples](04-diffusion-models/final_outputs/) |
 | 5 | [Diffusion vs. GAN](05-diffusion-vs-gan/) | Conditional DDPM and conditional WGAN-GP, MNIST | Qualitative comparison of quality, diversity, and stability |
 | 6 | [World models and agentic AI](06-world-models-agentic-ai-review/) | Literature review paper | [Paper (PDF)](06-world-models-agentic-ai-review/report.pdf) |
-| 7 | [Multimodal captioning (team project)](07-multimodal-captioning-team-project/) | LSTM and Transformer captioning, a discriminative model, and gated fusion, Amazon Berkeley Objects | Gated fusion: accuracy about 0.81, AUC about 0.87 |
 
 Results are the values recorded in each project's README or report when the project was completed. They weren't rerun for this repository.
 
-## My role in the team project
+## Final project
 
-Project 7 was built by a team of three. I built the generative component (the LSTM and Transformer captioning models, including training, inference, preprocessing, and evaluation) and the discriminative image-caption matching model. A teammate built the fusion models. The [report](07-multimodal-captioning-team-project/report.pdf) covers the generative component in detail.
+My team's final project for this course, [Multimodal Image Captioning](https://github.com/banajyotshna789/multimodal-image-captioning), has its own repository.
 
 ## Running the code
 
