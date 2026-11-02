@@ -1,0 +1,174 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{cite}
+\usepackage{hyperref}
+
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+\title{World Models and Agentic AI: Parallel Evolutions, Emerging Convergence, and Open Frontiers}
+\author{\IEEEauthorblockN{Banajyotshna Devi}\IEEEauthorblockA{Deep Learning -- Project 6\\Instructor: Lu Zhang\\April 2026}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Two questions motivate this review: how can an intelligent system internally model the world well enough to anticipate consequences before acting, and how can a system autonomously execute goals through iterative reasoning and action in complex environments? These questions define, respectively, the world-modeling and agentic AI research agendas. World models learn internal predictive representations of environment dynamics for planning, control, and simulation; agentic systems focus on closed-loop autonomous behavior with tools, memory, and multi-step planning. Despite parallel progress---latent dynamics methods such as Dreamer and MuZero achieving sample-efficient control and principled planning, and language-model-centered architectures such as ReAct and Reflexion demonstrating broad task capability---these fields largely evolve separately. World-model research is benchmarked in embodied and game-like settings with strict transition structure, while agentic systems are evaluated on software engineering, web interaction, and language-heavy tasks where explicit dynamics models remain underdeveloped. This review argues that the next major gains will come from disciplined integration: agentic systems that can reason over explicit or implicit world models, and world-model systems that adopt richer agentic planning and memory loops. The paper surveys core taxonomies for each field, highlights technical limitations, and proposes research directions at their intersection, where unresolved issues in grounding, evaluation, and reliability remain central obstacles.
+\end{abstract}
+
+\section{Introduction}
+Two questions motivate this review. First, how can an intelligent system internally model the world well enough to anticipate consequences before acting? Second, how can a system autonomously execute goals through iterative reasoning and action in complex environments? The first question defines the world-modeling agenda; the second defines the agentic AI agenda.
+
+Recent progress has made both agendas practical. In model-based reinforcement learning (RL), latent dynamics methods such as Dreamer have demonstrated sample-efficient control through imagination-based rollouts \cite{hafner2020dream, hafner2021mastering, hafner2023mastering}. MuZero showed that planning can emerge from learned models without explicit hand-crafted simulators \cite{schrittwieser2020muzero}. In parallel, language-model-centered agent architectures (for example, ReAct, Reflexion, and AutoGen-like multi-agent systems) have shown broad utility in task decomposition, tool use, and iterative error correction \cite{yao2023react, shinn2023reflexion, wu2023autogen}.
+
+Despite this progress, these areas often evolve separately. World-model papers are frequently benchmarked in embodied or game-like settings with strict transition structure, while agentic systems are often benchmarked in software engineering, web interaction, and language-heavy tasks where explicit dynamics models are underdeveloped \cite{liu2024agentbench, jimenez2024swebench, zhou2024webarena}. This review advances the thesis that the next major gains will come from disciplined integration: agentic systems that can reason over explicit or implicit world models, and world-model systems that adopt richer agentic planning and memory loops.
+
+\section{Part I -- World Models}
+\subsection{Background and Definitions}
+A world model is an internal predictive representation of environment dynamics. Given state $s_t$ and action $a_t$, a world model estimates future latent states and outcomes, often approximating $p(s_{t+1}, r_t \mid s_t, a_t)$ or analogous latent formulations. In modern deep learning, this representation may be:
+\begin{itemize}
+\item latent and compact (as in recurrent state-space models),
+\item partially explicit (value/policy dynamics with search),
+\item or generative and multimodal (video, language, action).
+\end{itemize}
+
+The practical objective is not only prediction fidelity but decision utility: a model is useful if imagined trajectories support better planning or control under finite compute and data budgets.
+
+\subsection{Taxonomy of World Models}
+Table~\ref{tab:wm-taxonomy} summarizes representative families highlighted in recent literature.
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Taxonomy of world-model approaches}
+\label{tab:wm-taxonomy}
+\begin{tabular}{p{3.0cm} p{3.2cm} p{3.6cm} p{3.0cm} p{2.8cm}}
+\toprule
+Category & Core idea & Representative works & Strengths & Typical limits \\
+\midrule
+Model-based RL (latent imagination) & Learn compact latent dynamics and plan/train policy in imagined rollouts & Dreamer, DreamerV2, DreamerV3 \cite{hafner2020dream, hafner2021mastering, hafner2023mastering} & High sample efficiency, strong control & Model bias under distribution shift \\
+
+Search with learned model & Learn model/value/policy jointly and plan via search & MuZero, EfficientZero \cite{schrittwieser2020muzero, ye2021mastering} & Strong game performance, principled planning & Expensive search, domain tuning \\
+
+Generative world models & Learn rich video-conditioned dynamics for interactive generation/planning & Genie, GAIA-1 \cite{bruce2024genie, hu2023gaia} & Rich multimodal simulation & Evaluation and controllability gaps \\
+
+Predictive representation learning & Learn robust predictive embeddings without full reconstruction & V-JEPA \cite{bardes2024jepa} & Scalable self-supervision & Action grounding often indirect \\
+
+Physical/embodied foundation models & Large-scale physically grounded simulation and control priors & RT-2, PaLM-E, Cosmos reports \cite{brohan2023rt2, driess2023palme, nvidia2025cosmos} & Better embodiment transfer & Reality gap, costly data pipelines \\
+
+LLMs as implicit world models & Use pretrained language models for commonsense dynamics and planning heuristics & Generative Agents, reasoning/planning studies \cite{park2023generative, yao2023react} & Broad prior knowledge, flexible abstractions & Weak physical precision, hallucinated transitions \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+A key trend is the shift from narrow, task-specific latent models toward multimodal predictive models with broader transfer potential. However, broader predictive scope usually increases uncertainty and weakens controllability unless explicit constraints are added.
+
+\subsection{Limitations and Open Challenges in World Models}
+\textbf{Scalability and compute efficiency.} Larger models improve representational capacity but increase training cost and latency. Practical deployment requires balancing model size against planning horizon and real-time constraints.
+
+\textbf{Distribution shift and sim-to-real mismatch.} Learned dynamics often fail when policy behavior changes state visitation beyond training coverage. This causes compounding rollout error and brittle long-horizon plans.
+
+\textbf{Causal and counterfactual reasoning deficits.} Many models capture correlations rather than mechanisms. Under interventions or rare events, predictive quality may degrade sharply.
+
+\textbf{Physical plausibility and constraint handling.} Video-quality generation does not guarantee physically valid dynamics. For embodied control, slight nonphysical artifacts can destabilize policy learning.
+
+\textbf{Evaluation fragmentation.} Benchmarks differ in modality, horizon, and metrics, making cross-paper comparison difficult. A model can appear state-of-the-art in one regime while failing in another equally relevant regime.
+
+\section{Part II -- Agentic AI Systems}
+\subsection{Background and Definitions}
+Agentic AI refers to systems that execute goal-directed loops of perception, reasoning, action, and feedback. Unlike static chatbots that provide single-turn responses, agentic systems maintain intermediate state, call external tools, update memory, and re-plan over multiple steps.
+
+Core design elements include:
+\begin{itemize}
+\item \textbf{Reasoning policy:} how the agent decomposes goals and chooses next actions.
+\item \textbf{Tool interface:} APIs, retrieval, code execution, or environment actions.
+\item \textbf{Memory:} short-term trace plus long-term summaries or vector stores.
+\item \textbf{Control architecture:} single-agent loops, orchestrator-subagent systems, or peer multi-agent collaboration.
+\end{itemize}
+
+Canonical reasoning patterns include chain-of-thought-style decomposition, ReAct action-reasoning interleaving, reflective self-critique, and debate-style critique among multiple agents \cite{wei2022chain, yao2023react, shinn2023reflexion, du2024debate}.
+
+\subsection{Taxonomy of Agentic Architectures}
+Table~\ref{tab:agent-taxonomy} organizes common architectures and representative frameworks.
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Taxonomy of agentic AI architectures}
+\label{tab:agent-taxonomy}
+\begin{tabular}{p{3.0cm} p{3.2cm} p{3.6cm} p{2.8cm} p{2.8cm}}
+\toprule
+Architecture type & Core mechanism & Representative works/tools & Strengths & Typical limits \\
+\midrule
+Single-agent tool user & One planner loops through tool calls and observations & ReAct-style agents, tool-enabled assistants \cite{yao2023react} & Simple control, low overhead & Error cascades, brittle recovery \\
+
+Reflective single agent & Adds self-evaluation and retry policy & Reflexion \cite{shinn2023reflexion} & Better correction and persistence & Extra tokens/latency, self-confirmation bias \\
+
+Orchestrator-subagent system & Coordinator delegates to specialized workers & AutoGen, LangGraph-style workflows \cite{wu2023autogen, langchain2024langgraph} & Modularity, parallelism & Coordination complexity, higher failure surface \\
+
+Peer multi-agent collaboration & Multiple agents debate/critique/propose solutions & CAMEL, multi-agent debate \cite{li2023camel, du2024debate} & Diverse reasoning paths & Mode collapse, communication overhead \\
+
+Autonomous task frameworks & Long-horizon autonomous loops with memory and planning & Voyager, CrewAI-like systems \cite{wang2023voyager, joaomoura2024crewai} & Open-ended behavior & Reliability and safety hard to guarantee \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+The strongest practical systems increasingly combine these patterns, for example a central orchestrator with reflective workers and benchmark-aware stopping criteria.
+
+\subsection{Limitations and Open Challenges in Agentic AI}
+\textbf{Reliability and hallucination propagation.} Agent chains amplify small mistakes. A wrong intermediate assumption can propagate through multiple tool calls and produce high-confidence but invalid outcomes.
+
+\textbf{Evaluation and benchmarking gaps.} Benchmarks such as AgentBench and SWE-bench are valuable, but they cover selective domains and can incentivize narrow optimization \cite{liu2024agentbench, jimenez2024swebench}. Cross-benchmark transfer remains inconsistent.
+
+\textbf{Safety and alignment under autonomy.} As action scope increases (code execution, external APIs, robotics), risk expands from incorrect text to real side effects. Guardrails are often heuristic and difficult to verify formally.
+
+\textbf{Scalability of multi-agent coordination.} Additional agents increase search diversity but also token cost, synchronization burden, and potential for redundant or contradictory plans.
+
+\textbf{Memory quality and temporal credit assignment.} Agents need compact but faithful memory updates. Over-compression loses critical context; excessive logs overwhelm reasoning and degrade performance.
+
+\section{Part III -- Connections and Future Directions}
+\subsection{Intersections Between World Models and Agentic AI}
+The two fields intersect around planning under uncertainty. World models provide predictive structure; agentic loops provide adaptive decision policies and tool-grounded execution. Integration can be viewed in three layers:
+
+\textbf{1) Imagination-augmented agent planning.}
+Agents can evaluate candidate plans by simulating outcomes in learned latent dynamics before external action. This can reduce costly real-world exploration and improve long-horizon coherence.
+
+\textbf{2) Safety via counterfactual rehearsal.}
+Before acting, an agent can test policy branches in a learned model, estimate risk, and reject unsafe trajectories. This mirrors model-predictive control but extends to language-and-tool workflows.
+
+\textbf{3) Unified multimodal memory.}
+World-model latents can serve as compact episodic memory for agentic systems, enabling abstraction across sensory streams, task traces, and semantic context.
+
+Evidence of early convergence appears in embodied language-action systems (for example, SayCan, PaLM-E, RT-2, Voyager), where high-level language planning is combined with grounded action priors \cite{ahn2022saycan, driess2023palme, brohan2023rt2, wang2023voyager}. Yet much current practice remains loosely coupled: many LLM agents still rely on shallow heuristics rather than explicit predictive models, while many world-model systems optimize control in constrained environments without richer agentic tool ecologies.
+
+\subsection{Future Directions}
+Based on the gaps above, the most promising directions are:
+
+\textbf{Calibrated uncertainty in learned simulation.}
+Integration requires uncertainty-aware world models so agentic planners can distinguish confident forecasts from speculative rollouts.
+
+\textbf{Hybrid symbolic-latent planning stacks.}
+Pure latent planning is opaque; pure symbolic planning is brittle. Hybrid stacks can combine explicit constraints with learned dynamics for better interpretability and robustness.
+
+\textbf{Benchmark co-design across the intersection.}
+Current benchmarks isolate capabilities. New benchmarks should jointly test: long-horizon planning, grounded tool use, safety under intervention, and adaptation to distribution shift.
+
+\textbf{Mechanistic memory for agents.}
+Rather than storing raw conversation traces, agents should maintain structured world-state abstractions with update rules tied to prediction error and task relevance.
+
+\textbf{Governance and controllability for autonomous loops.}
+As systems become more agentic and world-aware, governance moves from output filtering to policy-level constraints, auditable execution traces, and runtime fail-safe mechanisms.
+
+\section{Conclusion}
+World models and agentic AI are both central to the next phase of AI systems, but each currently solves different parts of the autonomy problem. World models contribute predictive structure for planning; agentic systems contribute flexible goal pursuit through reasoning, tools, and memory. The strongest near-term opportunity is principled integration: agents that can imagine before they act, calibrate uncertainty, and revise plans based on grounded feedback. The strongest long-term opportunity is a unified architecture that treats prediction, reasoning, memory, and action as a single closed-loop system with measurable reliability and safety properties. Achieving that goal requires better benchmarks, uncertainty-aware modeling, and tighter alignment between model internals and external behavior.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

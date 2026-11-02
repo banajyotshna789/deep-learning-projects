@@ -1,0 +1,51 @@
+========================================
+Image: 1000268201_693b08cb0e.jpg
+Reference: A child in a pink dress is climbing up a set of stairs in an entry way .
+Generated: a girl in a pink shirt is on on skateboard .
+BLEU-1: 0.6364
+BLEU-2: 0.5045
+BLEU-3: 0.3839
+BLEU-4: 0.2900
+
+========================================
+Image: 1001773457_577c3a7d70.jpg
+Reference: A black dog and a spotted dog are fighting
+Generated: two dogs dogs in a grass .
+BLEU-1: 0.5368
+BLEU-2: 0.2593
+BLEU-3: 0.1253
+BLEU-4: 0.0774
+
+========================================
+Image: 1002674143_1b742ab4b8.jpg
+Reference: A little girl covered in paint sits in front of a painted rainbow with her hands in a bowl .
+Generated: a little girl is a a in in of . .
+BLEU-1: 0.9091
+BLEU-2: 0.6030
+BLEU-3: 0.4323
+BLEU-4: 0.3170
+
+========================================
+Image: 1003163366_44323f5815.jpg
+Reference: A man lays on a bench while his dog sits by him .
+Generated: a dog and a woman dog a a . .
+BLEU-1: 0.5429
+BLEU-2: 0.1121
+BLEU-3: 0.0547
+BLEU-4: 0.0332
+
+========================================
+Image: 1007129816_e794419615.jpg
+Reference: A man in an orange hat starring at something .
+Generated: a man with a <unk> hat and a is hat .
+BLEU-1: 0.6154
+BLEU-2: 0.4529
+BLEU-3: 0.2652
+BLEU-4: 0.1479
+
+========================================
+Corpus BLEU Scores
+BLEU-1: 0.6791
+BLEU-2: 0.4293
+BLEU-3: 0.2781
+BLEU-4: 0.1838

@@ -1,0 +1,30 @@
+========================================
+Image: 1000268201_693b08cb0e.jpg
+Reference: A child in a pink dress is climbing up a set of stairs in an entry way .
+LSTM: a girl in a pink shirt is on on skateboard .
+Transformer: a woman in a green dress sitting on a bench with a dog .
+
+========================================
+Image: 1001773457_577c3a7d70.jpg
+Reference: A black dog and a spotted dog are fighting
+LSTM: two dogs dogs in a grass .
+Transformer: two dogs are playing tug of war with a blue ball .
+
+========================================
+Image: 1002674143_1b742ab4b8.jpg
+Reference: A little girl covered in paint sits in front of a painted rainbow with her hands in a bowl .
+LSTM: a little girl is a a in in of . .
+Transformer: a little girl in a yellow dress is playing with a ball .
+
+========================================
+Image: 1003163366_44323f5815.jpg
+Reference: A man lays on a bench while his dog sits by him .
+LSTM: a dog and a woman dog a a . .
+Transformer: a dog is jumping over a fence with a man sitting on a park bench .
+
+========================================
+Image: 1007129816_e794419615.jpg
+Reference: A man in an orange hat starring at something .
+LSTM: a man with a <unk> hat and a is hat .
+Transformer: a man with a mohawk and sunglasses .
+

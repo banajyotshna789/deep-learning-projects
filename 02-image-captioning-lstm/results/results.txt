@@ -1,0 +1,25 @@
+========================================
+Image: 1000268201_693b08cb0e.jpg
+Reference: A child in a pink dress is climbing up a set of stairs in an entry way .
+Generated: a girl in a pink shirt is on on skateboard .
+
+========================================
+Image: 1001773457_577c3a7d70.jpg
+Reference: A black dog and a spotted dog are fighting
+Generated: two dogs dogs in a grass .
+
+========================================
+Image: 1002674143_1b742ab4b8.jpg
+Reference: A little girl covered in paint sits in front of a painted rainbow with her hands in a bowl .
+Generated: a little girl is a a in in of . .
+
+========================================
+Image: 1003163366_44323f5815.jpg
+Reference: A man lays on a bench while his dog sits by him .
+Generated: a dog and a woman dog a a . .
+
+========================================
+Image: 1007129816_e794419615.jpg
+Reference: A man in an orange hat starring at something .
+Generated: a man with a <unk> hat and a is hat .
+
